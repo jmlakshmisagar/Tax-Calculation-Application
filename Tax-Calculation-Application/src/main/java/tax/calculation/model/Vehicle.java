@@ -1,4 +1,3 @@
-
 package tax.calculation.model;
 
 import java.text.DecimalFormat;
@@ -9,11 +8,10 @@ public class Vehicle implements TaxCalculator {
 	private String brand;
 	private double velocity;
 	private int capacity;
-	private int type; // 1 = Petrol, 2 = Diesel, 3 = CNG/LPG
+	private int type;
 	private double purchaseCost;
 	private double taxAmount;
 
-	// Constructor
 	public Vehicle(String registrationNo, String brand, double velocity, int capacity, int type, double purchaseCost) {
 		this.registrationNo = registrationNo;
 		this.brand = brand;
@@ -24,59 +22,26 @@ public class Vehicle implements TaxCalculator {
 		this.taxAmount = 0.0;
 	}
 
-	// Implement calculateTax() from TaxCalculator
 	@Override
 	public void calculateTax() {
-		double percentage;
-		switch (type) {
-		case 1:
-			percentage = 0.10;
-			break; // Petrol
-		case 2:
-			percentage = 0.11;
-			break; // Diesel
-		case 3:
-			percentage = 0.12;
-			break; // CNG/LPG
-		default:
-			percentage = 0.0;
-			break;
-		}
+		double percentage = switch (type) {
+		case 1 -> 0.10; // Petrol
+		case 2 -> 0.11; // Diesel
+		case 3 -> 0.12; // CNG/LPG
+		default -> 0.0;
+		};
 		taxAmount = velocity + capacity + (purchaseCost * percentage);
 	}
 
-	// Implement getTaxAmount() from TaxCalculator
 	@Override
 	public double getTaxAmount() {
 		return taxAmount;
 	}
 
-	// Getters
 	public String getRegistrationNo() {
 		return registrationNo;
 	}
 
-	public String getBrand() {
-		return brand;
-	}
-
-	public double getVelocity() {
-		return velocity;
-	}
-
-	public int getCapacity() {
-		return capacity;
-	}
-
-	public int getType() {
-		return type;
-	}
-
-	public double getPurchaseCost() {
-		return purchaseCost;
-	}
-
-	// Display vehicle details
 	public void displayVehicle() {
 		DecimalFormat df = new DecimalFormat("#.00");
 		String typeName = (type == 1) ? "PETROL" : (type == 2) ? "DIESEL" : "CNG/LPG";

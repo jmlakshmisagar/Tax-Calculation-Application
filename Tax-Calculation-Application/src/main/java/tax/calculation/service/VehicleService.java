@@ -5,60 +5,46 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VehicleService {
-    private List<Vehicle> vehicles = new ArrayList<>();
+	private List<Vehicle> vehicles = new ArrayList<>();
 
-    // Add a new vehicle
-    public void addVehicle(String registrationNo, String brand, double velocity, int capacity, int type, double purchaseCost) {
-        Vehicle vehicle = new Vehicle(registrationNo, brand, velocity, capacity, type, purchaseCost);
-        vehicles.add(vehicle);
-        System.out.println("Vehicle added successfully with Registration No: " + vehicle.getRegistrationNo());
-    }
+	public void addVehicle(String registrationNo, String brand, double velocity, int capacity, int type,
+			double purchaseCost) {
+		Vehicle vehicle = new Vehicle(registrationNo, brand, velocity, capacity, type, purchaseCost);
+		vehicle.calculateTax();
+		vehicles.add(vehicle);
+		System.out.println(
+				"Vehicle added successfully with Reg No: " + registrationNo + " | Tax: " + vehicle.getTaxAmount());
+	}
 
-    // Calculate tax for a specific vehicle by registration number
-    public void calculateTax(String registrationNo) {
-        Vehicle vehicle = findVehicleByRegNo(registrationNo);
-        if (vehicle != null) {
-            vehicle.calculateTax();
-            System.out.println("Vehicle tax for Registration No " + registrationNo + " is: " + vehicle.getTaxAmount());
-        } else {
-            System.out.println("Vehicle not found!");
-        }
-    }
+	public void calculateTax(String registrationNo) {
+		Vehicle vehicle = findVehicleByRegNo(registrationNo);
+		if (vehicle != null) {
+			vehicle.calculateTax();
+			System.out.println("Vehicle tax for Reg No " + registrationNo + " is: " + vehicle.getTaxAmount());
+		} else {
+			System.out.println("Vehicle not found!");
+		}
+	}
 
-    // Display all vehicles
-    public void displayAllVehicles() {
-        if (vehicles.isEmpty()) {
-            System.out.println("No vehicles available.");
-            return;
-        }
-        System.out.printf("%-10s %-10s %-10s %-5s %-10s %-12s %-10s%n", 
-                "REG.NO", "BRAND", "VELOCITY", "SEATS", "TYPE", "COST", "TAX");
-        for (Vehicle vehicle : vehicles) {
-            vehicle.displayVehicle();
-        }
-    }
+	public void displayAllVehicles() {
+		if (vehicles.isEmpty()) {
+			System.out.println("No vehicles available.");
+			return;
+		}
+		System.out.printf("%-10s %-10s %-10s %-5s %-10s %-12s %-10s%n", "REG.NO", "BRAND", "VELOCITY", "SEATS", "TYPE",
+				"COST", "TAX");
+		vehicles.forEach(Vehicle::displayVehicle);
+	}
 
-    // Calculate total vehicle tax
-    public double getTotalVehicleTax() {
-        double total = 0.0;
-        for (Vehicle vehicle : vehicles) {
-            total += vehicle.getTaxAmount();
-        }
-        return total;
-    }
+	public double getTotalVehicleTax() {
+		return vehicles.stream().mapToDouble(Vehicle::getTaxAmount).sum();
+	}
 
-    // Helper method to find vehicle by registration number
-    private Vehicle findVehicleByRegNo(String regNo) {
-        for (Vehicle vehicle : vehicles) {
-            if (vehicle.getRegistrationNo().equals(regNo)) {
-                return vehicle;
-            }
-        }
-        return null;
-    }
+	public int getVehicleCount() {
+		return vehicles.size();
+	}
 
-    // Get vehicle count
-    public int getVehicleCount() {
-        return vehicles.size();
-    }
+	private Vehicle findVehicleByRegNo(String regNo) {
+		return vehicles.stream().filter(v -> v.getRegistrationNo().equals(regNo)).findFirst().orElse(null);
+	}
 }
