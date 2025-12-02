@@ -2,16 +2,26 @@ package tax.calculation.menu;
 
 import tax.calculation.service.PropertyService;
 import tax.calculation.service.VehicleService;
+import tax.calculation.util.ConsoleTable;
 
 public class MenuUtils {
+
 	public static void showTotal(PropertyService propertyService, VehicleService vehicleService) {
-		System.out.println("\nTOTAL TAX SUMMARY");
-		System.out.printf("%-15s %-10s %-10s%n", "PARTICULAR", "COUNT", "TOTAL TAX");
-		System.out.printf("%-15s %-10d %-10.2f%n", "PROPERTIES", propertyService.getPropertyCount(),
-				propertyService.getTotalPropertyTax());
-		System.out.printf("%-15s %-10d %-10.2f%n", "VEHICLES", vehicleService.getVehicleCount(),
-				vehicleService.getTotalVehicleTax());
+
+		ConsoleTable table = new ConsoleTable("PARTICULAR", "COUNT", "TOTAL TAX");
+
+		table.addRow("PROPERTIES", String.valueOf(propertyService.getPropertyCount()),
+				String.format("%.2f", propertyService.getTotalPropertyTax()));
+
+		table.addRow("VEHICLES", String.valueOf(vehicleService.getVehicleCount()),
+				String.format("%.2f", vehicleService.getTotalVehicleTax()));
+
 		double grandTotal = propertyService.getTotalPropertyTax() + vehicleService.getTotalVehicleTax();
-		System.out.printf("%-15s %-10s %-10.2f%n", "GRAND TOTAL", "-", grandTotal);
+
+		table.addRow("GRAND TOTAL", "-", String.format("%.2f", grandTotal));
+
+		System.out.println("\nTOTAL TAX SUMMARY");
+		table.printTable();
 	}
 }
+	

@@ -1,9 +1,9 @@
 package tax.calculation.model;
 
-import java.text.DecimalFormat;
 import tax.calculation.service.TaxCalculator;
 
 public class Property implements TaxCalculator {
+
 	private int id;
 	private double builtUpArea;
 	private double baseValue;
@@ -39,9 +39,27 @@ public class Property implements TaxCalculator {
 		return id;
 	}
 
-	public void displayProperty() {
-		DecimalFormat df = new DecimalFormat("#.00");
-		System.out.printf("%-5d %-10.2f %-10.2f %-5d %-6s %-10s%n", id, builtUpArea, baseValue, age,
-				(isCity ? "Y" : "N"), df.format(taxAmount));
+	public double getBuiltUpArea() {
+		return builtUpArea;
+	}
+
+	public double getBaseValue() {
+		return baseValue;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public boolean isCity() {
+		return isCity;
+	}
+
+	/**
+	 * Returns a row for ConsoleTable
+	 */
+	public String[] toTableRow() {
+		return new String[] { String.valueOf(id), String.format("%.2f", builtUpArea), String.format("%.2f", baseValue),
+				String.valueOf(age), isCity ? "CITY" : "NON-CITY", String.format("%.2f", taxAmount) };
 	}
 }

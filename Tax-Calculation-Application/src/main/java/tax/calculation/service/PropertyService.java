@@ -1,10 +1,13 @@
 package tax.calculation.service;
 
 import tax.calculation.model.Property;
+import tax.calculation.util.ConsoleTable;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class PropertyService {
+
 	private List<Property> properties = new ArrayList<>();
 	private int propertyIdCounter = 1;
 
@@ -13,6 +16,7 @@ public class PropertyService {
 		Property property = new Property(propertyIdCounter++, builtUpArea, baseValue, age, isCity);
 		property.calculateTax();
 		properties.add(property);
+
 		System.out.println(
 				"Property added successfully with ID: " + property.getId() + " | Tax: " + property.getTaxAmount());
 	}
@@ -32,8 +36,14 @@ public class PropertyService {
 			System.out.println("No properties available.");
 			return;
 		}
-		System.out.printf("%-5s %-10s %-10s %-5s %-6s %-10s%n", "ID", "AREA", "BASE", "AGE", "CITY", "TAX");
-		properties.forEach(Property::displayProperty);
+
+		ConsoleTable table = new ConsoleTable("ID", "AREA", "BASE", "AGE", "CITY", "TAX");
+
+		for (Property p : properties) {
+			table.addRow(p.toTableRow());
+		}
+
+		table.printTable();
 	}
 
 	public double getTotalPropertyTax() {
@@ -44,6 +54,7 @@ public class PropertyService {
 		return properties.size();
 	}
 
+	// ⬇️ THIS METHOD MUST EXIST — OTHERWISE your error occurs
 	private Property findPropertyById(int id) {
 		return properties.stream().filter(p -> p.getId() == id).findFirst().orElse(null);
 	}
