@@ -1,6 +1,6 @@
 package tax.calculation.model;
 
-import tax.calculation.service.TaxCalculator;
+import tax.calculation.interfaces.TaxCalculator;
 
 public class Property implements TaxCalculator {
 

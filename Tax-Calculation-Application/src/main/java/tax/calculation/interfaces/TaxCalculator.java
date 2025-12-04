@@ -1,4 +1,4 @@
-package tax.calculation.service;
+package tax.calculation.interfaces;
 
 public interface TaxCalculator {
 	void calculateTax();
