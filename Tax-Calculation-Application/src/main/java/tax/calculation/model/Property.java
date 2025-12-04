@@ -55,9 +55,6 @@ public class Property implements TaxCalculator {
 		return isCity;
 	}
 
-	/**
-	 * Returns a row for ConsoleTable
-	 */
 	public String[] toTableRow() {
 		return new String[] { String.valueOf(id), String.format("%.2f", builtUpArea), String.format("%.2f", baseValue),
 				String.valueOf(age), isCity ? "CITY" : "NON-CITY", String.format("%.2f", taxAmount) };

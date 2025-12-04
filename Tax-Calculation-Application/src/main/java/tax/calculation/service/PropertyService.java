@@ -54,7 +54,6 @@ public class PropertyService {
 		return properties.size();
 	}
 
-	// ⬇️ THIS METHOD MUST EXIST — OTHERWISE your error occurs
 	private Property findPropertyById(int id) {
 		return properties.stream().filter(p -> p.getId() == id).findFirst().orElse(null);
 	}
